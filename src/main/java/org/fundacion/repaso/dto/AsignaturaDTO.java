@@ -14,19 +14,13 @@ import lombok.NoArgsConstructor;
 public class AsignaturaDTO {
     private Long id;
     private String asignaturaName;
-    private List<AlumnoDTO> alumnosMat;
+    private List<AlumnoYNotasDTO> alumnosMat;
 
     public AsignaturaDTO(Asignatura a) {
         this.id = a.getAsignaturaId();
         this.asignaturaName = a.getAsignaturaName();
-        this.alumnosMat = toAlumnoDTO(a.getAlumnosMatriculados());
-    }
-
-    private List<AlumnoDTO> toAlumnoDTO(List<Alumno> alumnos) {
-        List<AlumnoDTO> alumnosDTO = new ArrayList<>();
-        for (Alumno a : alumnos) {
-            alumnosDTO.add(new AlumnoDTO(a));
-        }
-        return alumnosDTO;
+        this.alumnosMat = a.getAlumnosMatriculados().stream()
+                .map(al -> new AlumnoYNotasDTO(al, a)).toList();
     }
 }
+  
